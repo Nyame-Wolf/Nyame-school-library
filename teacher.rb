@@ -1,6 +1,6 @@
 require 'person'
 
-class Person < Teacher
+class Teacher < Person
   def initialize(*args, specialization)
     super(*args)
     @specialization = specialization
