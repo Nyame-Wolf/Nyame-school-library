@@ -61,7 +61,7 @@ class App
     @user_input = gets.chomp.to_i
     print 'Age: '
     age = gets.chomp.to_i
-    # check age not to have wierd values
+
     print 'Name: '
     name = gets.chomp
     case @user_input
@@ -69,13 +69,13 @@ class App
       print 'Has parent permission? [Y | N] '
       parent_permission = gets.chomp.downcase
       parent_permission = parent_permission == 'y'
-      # use decorator to capitalize name
+
       @people << Student.new('none', age, name, parent_permission)
     when 2
       print 'Specialization: '
       specialization = gets.chomp
       parent_permission = true
-      # use decorator to capitalize name
+
       @people << Teacher.new(age, name, parent_permission, specialization)
     end
     puts '\nPerson created successfully'
@@ -86,7 +86,7 @@ class App
     title = gets.chomp
     print 'Author: '
     author = gets.chomp
-    # capitalize both title and author
+
     @book_list << Book.new(title, author)
   end
 
