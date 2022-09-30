@@ -1,12 +1,11 @@
-require 'person'
+require './person'
 
 class Student < Person
   attr_accessor :classroom
 
-  def initialize(*args, classroom)
+  def initialize(classroom = '', *args)
     super(*args)
     @classroom = classroom
-    update_classroom(@classroom)
   end
 
   def play_hooky
