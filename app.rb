@@ -59,7 +59,6 @@ class App
   end
 
   def create_person
-   
     @user_input = gets.chomp.to_i
     print 'Age: '
     age = gets.chomp.to_i
