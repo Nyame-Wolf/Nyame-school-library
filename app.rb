@@ -4,15 +4,18 @@ require './book'
 require './rental'
 require './capitalize_decorator'
 require './menu'
-class App
+
+class App < Menu
   def initialize
+    @user_input = 0
     @book_list = []
     @people = []
     @rental_list = []
+    super
   end
-  
-  def switch_case(user_input)
-    case user_input
+
+  def switch_case
+    case @user_input
     when 1 then list_all_books
     when 2 then list_all_people
     when 3
@@ -29,13 +32,9 @@ class App
     puts "Please Enter a number in the menu\n"
   end
 
-  def run 
-    menu = Menu.new
-    user_input = 0
-    menu.run_menu
-    user_input = gets.chomp
-    switch_case(user_input) 
-  end 
+  def run
+    run_menu
+  end
 
   def list_all_books
     if @book_list.empty?
