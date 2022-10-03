@@ -3,24 +3,16 @@ require './teacher'
 require './book'
 require './rental'
 require './capitalize_decorator'
+require './menu'
 class App
   def initialize
-    @user_input = 0
     @book_list = []
     @people = []
     @rental_list = []
   end
-
-  def run
-    loop do
-      print "\nPlease choose an option by entering a number:\n1 - List all books\n2 - List all people\n3 - Create a person\n4 - Create a book\n5 - Create a rental\n6 - List all rentals for a given person id\n7 - Exit\n"
-      @user_input = gets.chomp.to_i
-      (1..7).include?(@user_input) ? switch_case : wrong_input
-    end
-  end
-
-  def switch_case
-    case @user_input
+  
+  def switch_case(user_input)
+    case user_input
     when 1 then list_all_books
     when 2 then list_all_people
     when 3
@@ -36,6 +28,14 @@ class App
   def wrong_input
     puts "Please Enter a number in the menu\n"
   end
+
+  def run 
+    menu = Menu.new
+    user_input = 0
+    menu.run_menu
+    user_input = gets.chomp
+    switch_case(user_input) 
+  end 
 
   def list_all_books
     if @book_list.empty?
