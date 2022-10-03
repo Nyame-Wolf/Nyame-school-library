@@ -23,7 +23,9 @@ class App
     case @user_input
     when 1 then list_all_books
     when 2 then list_all_people
-    when 3 then create_person
+    when 3
+      puts 'Do you want to create a student(1) or a teacher(2)? [Input The Number]:'
+      create_person
     when 4 then create_book
     when 5 then create_rental
     when 6 then list_all_rental
@@ -57,7 +59,7 @@ class App
   end
 
   def create_person
-    puts 'Do you want to create a student(1) or a teacher(2)? [Input The Number]:'
+   
     @user_input = gets.chomp.to_i
     print 'Age: '
     age = gets.chomp.to_i
