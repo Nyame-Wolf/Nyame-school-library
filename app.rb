@@ -54,6 +54,7 @@ class App < Menu
 
   def exit_app
     puts 'Thank you for using this app'
+    PersistData.store_books
     exit
   end
 
