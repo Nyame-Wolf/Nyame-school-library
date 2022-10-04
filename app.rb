@@ -11,7 +11,7 @@ class App < Menu
     @user_input = 0
     @book_list = PersistData.load_books
     @people = PersistData.load_people
-    @rental_list = []
+    @rental_list = PersistData.load_rentals
     super
   end
 
@@ -57,6 +57,7 @@ class App < Menu
     puts 'Thank you for using this app'
     PersistData.store_books(@book_list)
     PersistData.store_people(@people)
+    PersistData.store_rentals(@rental_list)
     exit
   end
 

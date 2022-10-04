@@ -49,4 +49,33 @@ class PersistData
     end
     data
   end
+
+  def store_rentals(rental)
+    data = []
+    file = './rentals.json'
+    return unless File.exist?(file)
+
+    rentals.each do |rental|
+      data << {id: rental.id, book: rental.book.id, person: rental.person.id, date: rental.Date}
+    end
+    File.write(file, JSON.generate(data))
+  end
+
+  def load_rentals
+    data = []
+    file = './rentals.json'
+    return unless File.exist?(file)
+
+    JSON.parse(File.read(file).each do |rental|
+    data << Rental.new(rental['date'], rental['book'],
+    books.find do |book|
+    book.id == rental['book']
+    end, 
+    person.find do |person|
+    person.id == rental['book']
+    end
+    )
+    )
+  end 
+  data
 end
