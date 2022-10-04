@@ -8,10 +8,11 @@ require './persist_data'
 
 class App < Menu
   def initialize
+    pdata = PersistData.new
     @user_input = 0
-    @book_list = PersistData.load_books
-    @people = PersistData.load_people
-    @rental_list = PersistData.load_rentals
+    @book_list = pdata.load_books
+    @people = []
+    @rental_list = []
     super
   end
 
@@ -22,7 +23,8 @@ class App < Menu
     when 3
       puts 'Do you want to create a student(1) or a teacher(2)? [Input The Number]:'
       create_person
-    when 4 then create_book
+    when 4 
+    create_book(@book_list)
     when 5 then create_rental
     when 6 then list_all_rental
     when 7 then exit_app
@@ -85,13 +87,14 @@ class App < Menu
     puts '\nPerson created successfully'
   end
 
-  def create_book
+  def create_book(arr)
+    @title = ''
+    @author = ''
     print 'Title: '
-    title = gets.chomp
+    @title = gets.chomp
     print 'Author: '
-    author = gets.chomp
-
-    @book_list << Book.new(title, author)
+    @author = gets.chomp
+    arr << Book.new(@title, @author)
   end
 
   def create_rental
