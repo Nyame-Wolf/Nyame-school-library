@@ -9,8 +9,8 @@ require './persist_data'
 class App < Menu
   def initialize
     @user_input = 0
-    @book_list = store_books
-    @people = []
+    @book_list = PersistData.load_books
+    @people = PersistData.load_people
     @rental_list = []
     super
   end
@@ -56,6 +56,7 @@ class App < Menu
   def exit_app
     puts 'Thank you for using this app'
     PersistData.store_books(@book_list)
+    PersistData.store_people(@people)
     exit
   end
 
