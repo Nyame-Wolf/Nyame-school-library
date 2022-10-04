@@ -4,11 +4,12 @@ require './book'
 require './rental'
 require './capitalize_decorator'
 require './menu'
+require './persist_data'
 
 class App < Menu
   def initialize
     @user_input = 0
-    @book_list = []
+    @book_list = store_books
     @people = []
     @rental_list = []
     super
@@ -54,7 +55,7 @@ class App < Menu
 
   def exit_app
     puts 'Thank you for using this app'
-    PersistData.store_books
+    PersistData.store_books(@book_list)
     exit
   end
 
