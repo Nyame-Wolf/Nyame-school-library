@@ -5,14 +5,14 @@ require './rental'
 require './capitalize_decorator'
 require './menu'
 require './persist_data'
+require './create_person'
 
 class App < Menu
   def initialize
-    pdata = PersistData.new
     @user_input = 0
-    @book_list = pdata.load_books
-    @people = []
-    @rental_list = []
+    @book_list = PersistData.load_books
+    @people = PersistData.load_people
+    @rental_list = PersistData.load_rentals(@book_list, @people)
     super
   end
 
@@ -22,9 +22,9 @@ class App < Menu
     when 2 then list_all_people
     when 3
       puts 'Do you want to create a student(1) or a teacher(2)? [Input The Number]:'
-      create_person
-    when 4 
-    create_book(@book_list)
+      PersonCreator.create_person(@people)
+    when 4
+      Book.create_book(@book_list)
     when 5 then create_rental
     when 6 then list_all_rental
     when 7 then exit_app
@@ -63,40 +63,6 @@ class App < Menu
     exit
   end
 
-  def create_person
-    @user_input = gets.chomp.to_i
-    print 'Age: '
-    age = gets.chomp.to_i
-
-    print 'Name: '
-    name = gets.chomp
-    case @user_input
-    when 1
-      print 'Has parent permission? [Y | N] '
-      parent_permission = gets.chomp.downcase
-      parent_permission = parent_permission == 'y'
-
-      @people << Student.new('none', age, name, parent_permission)
-    when 2
-      print 'Specialization: '
-      specialization = gets.chomp
-      parent_permission = true
-
-      @people << Teacher.new(age, name, parent_permission, specialization)
-    end
-    puts '\nPerson created successfully'
-  end
-
-  def create_book(arr)
-    @title = ''
-    @author = ''
-    print 'Title: '
-    @title = gets.chomp
-    print 'Author: '
-    @author = gets.chomp
-    arr << Book.new(@title, @author)
-  end
-
   def create_rental
     if @book_list.empty?
       puts "\nThere are no books available for rent. Want to create one? Enter 4:"
@@ -119,8 +85,8 @@ class App < Menu
     renter = gets.chomp.to_i
     puts 'Date:'
     date = gets.chomp
-    @rental_list << Rental.new(@people[renter], @book_list[rented_book], date)
-    puts '\nPerson created successfully'
+    @rental_list << Rental.new(date, @book_list[rented_book], @people[renter])
+    puts '\nRental created successfully'
   end
 
   def list_all_rental

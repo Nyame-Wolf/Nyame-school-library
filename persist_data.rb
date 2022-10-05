@@ -1,81 +1,87 @@
 require 'json'
+require 'pry'
 
 class PersistData
-  def store_books(books)
+  def self.store_books(books)
     data = []
     file = './books.json'
-    return unless File.exist?(file)
-
     books.each do |book|
-      data << { title: book.title, author: book.author }
+      data << { title: book.title, author: book.author, id: book.id }
     end
     File.write(file, JSON.generate(data))
   end
 
-  def load_books
-    data = []
+  def self.load_books
     file = './books.json'
-    return unless File.exist?(file) && File.read(file) != ''
-
-    JSON.parse(File.read(file)).each do |book|
-      data << Book.new(book['title'], book['author'])
+    data = []
+    if File.exist?(file)
+      JSON.parse(File.read(file)).each do |book|
+        data << Book.new(book['title'], book['author'], book['id'])
+      end
     end
     data
   end
 
-#   def store_people(people)
-#     data = []
+  def self.store_people(people)
+    data = []
+    file = './person.json'
 
-#     file = './person.json'
-#     return unless File.exist?(file)
+    people.each do |person|
+      case person.class.to_s
+      when 'Student'
+        data << { type: person.class, age: person.age, name: person.name,
+                  parent_permission: person.parent_permission, id: person.id }
+      when 'Teacher'
+        data << { type: person.class, age: person.age, name: person.name,
+                  specialization: person.specialization }
+      end
+    end
+    File.write(file, JSON.generate(data))
+  end
 
-#     people.each do |person|
-#       data << if person.instance_of?(Student)
-#                 { Student: person.class, age: person.age, name: person.name, parent_permission: person.parent_permission }
-#               else
-#                 { Teacher: person.class, age: person.age, name: person.name, parent_permission: person.parent_permission, specialization: person.specialization }
-#               end
-#     end
-#     File.write(file, JSON.generate(data))
-#   end
+  def self.load_people
+    file = './person.json'
+    data = []
+    if File.exist?(file)
+      JSON.parse(File.read(file)).each do |person|
+        case person['type']
+        when 'Student'
+          data << Student.new(person['age'], person['name'], person['parent_permission'], person['id'])
+        when 'Teacher'
+          data << Teacher.new(person['specialization'], person['age'], person['name'], person['id'])
+        end
+      end
+    end
+    data
+  end
 
-#   def load_people
-#     data = []
-#     file = './person.json'
-#     return unless File.exist?(file) && File.read(file) != ''
+  def self.store_rentals(rentals)
+    data = []
+    file = './rentals.json'
 
-#     JSON.parse(File.read(file)).each do |person|
-#       data << Student.new(person['age'], person['name'], person[parent_permission])
-#       data << Teacher.new(person['age'], person['name'], person[parent_permission], specialization['specialization'])
-#     end
-#     data
-#   end
+    rentals.each do |rental|
+      data << { id: rental.id, book: rental.book.id, person: rental.person.id, date: rental.date }
+    end
+    File.write(file, JSON.generate(data))
+  end
 
-#   def store_rentals(_rental)
-#     data = []
-#     file = './rentals.json'
-#     return unless File.exist?(file)
+  def self.load_rentals(books, people)
+    file = './rentals.json'
+    data = []
+    if File.exist?(file)
 
-#     rentals.each do |rental|
-#       data << { id: rental.id, book: rental.book.id, person: rental.person.id, date: rental.Date }
-#     end
-#     File.write(file, JSON.generate(data))
-#   end
+      JSON.parse(File.read(file)).each do |rental|
+        book_id = books.find do |book|
+          book.id == rental['book']
+        end
 
-#   def load_rentals
-#     data = []
-#     file = './rentals.json'
-#     return unless File.exist?(file)
+        person_id = people.find do |person|
+          person.id == rental['person']
+        end
 
-#     JSON.parse(File.read(file)).each do |rental|
-#       data << Rental.new(rental['date'], rental['book'],
-#                          books.find do |book|
-#                            book.id == rental['book']
-#                          end,
-#                          person.find do |person|
-#                            person.id == rental['book']
-#                          end)
-#     end
-#     data
-#   end
+        data << Rental.new(rental['date'], book_id, person_id)
+      end
+    end
+    data
+  end
 end
