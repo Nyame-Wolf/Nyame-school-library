@@ -1,4 +1,4 @@
-require_relative '../classromm'
+require_relative '../classroom'
 require 'yaml'
 
 describe Classroom do
