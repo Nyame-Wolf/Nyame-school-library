@@ -8,7 +8,7 @@ class PersistData
     books.each do |book|
       data << { title: book.title, author: book.author, id: book.id }
     end
-    File.write(file, JSON.generate(data))
+    File.write(file, JSON.pretty_generate(data))
   end
 
   def self.load_books
@@ -33,10 +33,10 @@ class PersistData
                   parent_permission: person.parent_permission, id: person.id }
       when 'Teacher'
         data << { type: person.class, age: person.age, name: person.name,
-                  specialization: person.specialization }
+                  specialization: person.specialization, id: person.id }
       end
     end
-    File.write(file, JSON.generate(data))
+    File.write(file, JSON.pretty_generate(data))
   end
 
   def self.load_people
@@ -62,7 +62,7 @@ class PersistData
     rentals.each do |rental|
       data << { id: rental.id, book: rental.book.id, person: rental.person.id, date: rental.date }
     end
-    File.write(file, JSON.generate(data))
+    File.write(file, JSON.pretty_generate(data))
   end
 
   def self.load_rentals(books, people)
