@@ -1,20 +1,26 @@
-require_relative '../rental'
-require_relative '../person'
+require './rental'
+require './teacher'
+require './book'
 
 describe Rental do
   before :each do
-    @rental = Rental.new('01/02/2020', 'Alchemist', 1)
+    @person = Teacher.new('Math', 23, 'Ahmed', 99)
+    @book = Book.new('title', 'author', 30)
+    @date = '03/04/2020'
+    @rental = Rental.new(@date, @book, @person)
   end
 
-  it "the rentee\'s id should be 1" do
-    @rental.person.should eq 1
+  it 'Creates instance with correct info' do
+    expect([@rental.book, @rental.person, @rental.date]).to eq [@book, @person, @date]
   end
 
-  it "rental\'s date should be 01/02/2020" do
-    @rental.date.should eql '01/02/2020'
+  it 'Add rental to person_renting rentals' do
+    person_rentals = @person.rentals.include?(@rental)
+    expect(person_rentals).to eq true
   end
 
-  it "rental\'s book should be Alchemist" do
-    @rental.book.should eql 'Alchemist'
+  it 'Add rental to book rentals' do
+    book_rentals = @book.rentals.include?(@rental)
+    expect(book_rentals).to eq true
   end
 end

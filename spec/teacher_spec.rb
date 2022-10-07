@@ -3,7 +3,7 @@ require_relative '../person'
 
 describe Teacher do
   before :each do
-    @teacher = Teacher.new(30, 'Ahmad', true, 'math')
+    @teacher = Teacher.new('math', 'Ahmad', 30, 687)
   end
 
   it 'teacher should be an instance of Person' do
